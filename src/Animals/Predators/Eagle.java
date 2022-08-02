@@ -2,18 +2,19 @@ package Animals.Predators;
 
 import Animals.Animal;
 import Animals.AnimalType;
+import lombok.Getter;
+
 
 public class Eagle extends Predators {
     AnimalType animalType = AnimalType.Eagle;
-    public int canEatFromTable = 4;
-    public int canBeEatenFromTable = 4;
-    private int speed = 3;
+    private double weight= animalType.getAnimalWeight();
 
     public Eagle(int i) {
         super(i);
     }
 
-    public int getSpeed() {
-        return speed;
+    @Override
+    public AnimalType getAnimalType() {
+        return animalType;
     }
 }

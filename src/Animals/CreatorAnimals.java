@@ -81,7 +81,7 @@ public class CreatorAnimals {
         List<Plant> plants = new ArrayList<>();
         int random = ThreadLocalRandom.current().nextInt(0, 100);
         Plant plant = null;
-        if (random < 30) {
+        if (random < 50) {
             plant = new Plant();
         }
         if (plant != null) {

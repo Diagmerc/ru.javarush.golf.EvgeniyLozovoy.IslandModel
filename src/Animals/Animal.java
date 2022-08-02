@@ -4,6 +4,7 @@ import Animals.Herbivores.*;
 import Animals.Predators.*;
 import Island.Island;
 import Island.Location;
+import lombok.Getter;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -12,22 +13,20 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal {
     AnimalType animalType;
-    public int canEatFromTable;
-    public int canBeEatenFromTable;
     Location location;
-    private int speed;
     private int numberOfAnimal;
+    private double weight;
 
     public Animal(int numberOfAnimal) {
         this.numberOfAnimal = numberOfAnimal;
     }
 
-    public int getNumberOfAnimal() {
-        return numberOfAnimal;
+    public AnimalType getAnimalType() {
+        return animalType;
     }
 
-    public int getSpeed() {
-        return speed;
+    public int getNumberOfAnimal() {
+        return numberOfAnimal;
     }
 
     public void setLocation(Location location) {
@@ -45,7 +44,7 @@ public abstract class Animal {
 
     public boolean eat(Animal animal) {
         boolean result = false;
-        int chanceToEat = ParameterMatrix.chanceToEat[this.canEatFromTable][animal.canBeEatenFromTable];
+        int chanceToEat = ParameterMatrix.chanceEat[this.animalType.getChanseToEat()][animal.animalType.getChanseToEat()];
         int random = ThreadLocalRandom.current().nextInt(0, 100);
         if (random > chanceToEat) {
             result = true;
@@ -53,8 +52,8 @@ public abstract class Animal {
         return result;
     }
 
-    public void move(Animal animal, int speed) {
-        int moveSpeed = ThreadLocalRandom.current().nextInt(1, speed + 1);
+    public void move() {
+        int moveSpeed = ThreadLocalRandom.current().nextInt(1, this.getAnimalType().getSpeed() + 1);
         int random = ThreadLocalRandom.current().nextInt(0, 4);
         Location locationCurrent = Island.locations[location.getX()][location.getY()];
         Location locationNext = null;
@@ -85,10 +84,10 @@ public abstract class Animal {
                 random = ThreadLocalRandom.current().nextInt(0, 4);
         }
         if (locationNext != null) {
-            locationNext.setAnimals(locationNext.getAnimals(), animal);
-            locationCurrent.setAnimals(locationCurrent.getAnimals(), animal);
-            animal.setLocation(locationNext);
-            System.out.println(animal.getClass().getSimpleName() + animal.getNumberOfAnimal() + " сменил локацию " + animal.location.getX() + " " + animal.location.getY());
+            locationNext.setAnimals(locationNext.getAnimals(), this);
+            locationCurrent.setAnimals(locationCurrent.getAnimals(), this);
+            this.setLocation(locationNext);
+            System.out.println(this.getClass().getSimpleName() + this.getNumberOfAnimal() + " сменил локацию " + this.location.getX() + " " + this.location.getY());
         }
     }
 }

@@ -2,30 +2,18 @@ package Animals.Herbivores;
 
 import Animals.Animal;
 import Animals.AnimalType;
+import lombok.Getter;
 
 public class Sheep extends Herbivores {
     private AnimalType animalType = AnimalType.Sheep;
-    private int canEatFromTable = 10;
-    private int canBeEatenFromTable = 10;
-    private int speed = 3;
+    private double weight= animalType.getAnimalWeight();
 
     public Sheep(int i) {
         super(i);
     }
 
+    @Override
     public AnimalType getAnimalType() {
         return animalType;
-    }
-
-    public int getCanEatFromTable() {
-        return canEatFromTable;
-    }
-
-    public int getCanBeEatenFromTable() {
-        return canBeEatenFromTable;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 }

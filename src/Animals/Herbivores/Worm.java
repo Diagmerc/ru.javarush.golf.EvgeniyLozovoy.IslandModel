@@ -2,30 +2,22 @@ package Animals.Herbivores;
 
 import Animals.Animal;
 import Animals.AnimalType;
+import lombok.Getter;
 
 public class Worm extends Herbivores {
-    private AnimalType animalType = AnimalType.Сaterpillar;
-    private int canEatFromTable = 14;
-    private int canBeEatenFromTable = 14;
-    private int speed = 0;
+    private AnimalType animalType = AnimalType.Worm;
+    private double weight= animalType.getAnimalWeight();
 
     public Worm(int i) {
         super(i);
     }
 
-    public AnimalType getAnimalType() {
-        return animalType;
-    }
-
-    public int getCanEatFromTable() {
-        return canEatFromTable;
-    }
-
-    public int getCanBeEatenFromTable() {
-        return canBeEatenFromTable;
+    @Override
+    public void move() {
     }
 
     @Override
-    public void move(Animal animal, int speed) {
+    public AnimalType getAnimalType() {
+        return animalType;
     }
 }

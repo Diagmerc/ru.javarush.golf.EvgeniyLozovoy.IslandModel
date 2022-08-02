@@ -1,15 +1,17 @@
 package Animals.Predators;
 
+import Animals.AnimalType;
+
 public class Wolf extends Predators {
-    public int canEatFromTable = 0;
-    public int canBeEatenFromTable = 0;
-    private int speed = 3;
+    private AnimalType animalType = AnimalType.Wolf;
+    private double weight= animalType.getAnimalWeight();
 
     public Wolf(int i) {
         super(i);
     }
 
-    public int getSpeed() {
-        return speed;
+    @Override
+    public AnimalType getAnimalType() {
+        return animalType;
     }
 }

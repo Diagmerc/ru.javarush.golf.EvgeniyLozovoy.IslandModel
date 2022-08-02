@@ -5,27 +5,14 @@ import Animals.AnimalType;
 
 public class Horse extends Herbivores {
     private AnimalType animalType = AnimalType.Horse;
-    private int canEatFromTable = 5;
-    private int canBeEatenFromTable = 5;
-    private int speed = 2;
+    private double weight= animalType.getAnimalWeight();
 
     public Horse(int i) {
         super(i);
     }
 
+    @Override
     public AnimalType getAnimalType() {
         return animalType;
-    }
-
-    public int getCanEatFromTable() {
-        return canEatFromTable;
-    }
-
-    public int getCanBeEatenFromTable() {
-        return canBeEatenFromTable;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 }

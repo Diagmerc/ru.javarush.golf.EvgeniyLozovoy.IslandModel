@@ -2,30 +2,19 @@ package Animals.Herbivores;
 
 import Animals.Animal;
 import Animals.AnimalType;
+import lombok.Getter;
+
 
 public class Duck extends Herbivores {
     private AnimalType animalType = AnimalType.Duck;
-    private int canEatFromTable = 13;
-    private int canBeEatenFromTable = 13;
-    private int speed = 4;
+    private double weight= animalType.getAnimalWeight();
 
     public Duck(int i) {
         super(i);
     }
 
+    @Override
     public AnimalType getAnimalType() {
         return animalType;
-    }
-
-    public int getCanEatFromTable() {
-        return canEatFromTable;
-    }
-
-    public int getCanBeEatenFromTable() {
-        return canBeEatenFromTable;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 }
