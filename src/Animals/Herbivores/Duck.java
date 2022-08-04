@@ -2,10 +2,11 @@ package Animals.Herbivores;
 
 import Animals.Animal;
 import Animals.AnimalType;
+import Animals.Parameters;
 import lombok.Getter;
 
 
-public class Duck extends Herbivores {
+public class Duck extends Herbivore {
     private AnimalType animalType = AnimalType.Duck;
     private double weight= animalType.getAnimalWeight();
 
@@ -15,6 +16,11 @@ public class Duck extends Herbivores {
 
     @Override
     public AnimalType getAnimalType() {
-        return animalType;
+        return this.animalType;
+    }
+
+    @Override
+    public Animal reproduce() {
+        return new Duck(Parameters.countAnimalsOnIsland+1);
     }
 }

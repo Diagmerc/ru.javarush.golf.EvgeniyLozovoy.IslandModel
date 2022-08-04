@@ -1,9 +1,6 @@
 package Animals;
 
 
-import lombok.Getter;
-
-@Getter
 public enum AnimalType {
     Wolf(0,3,30,8,50), Snake(1,3,30,3,15),
     Fox(2,2,30,2,8), Bear(3,2,5,80,500),

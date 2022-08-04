@@ -2,6 +2,7 @@ package Island;
 
 import Animals.Animal;
 import Animals.CreatorAnimals;
+import Animals.Parameters;
 import Animals.Plant;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Island {
     public static int WIDTH = 20;
-    public static int HEIGHT = 100;
+    public static int HEIGHT = 10;
     public CreatorAnimals creatorAnimals = new CreatorAnimals();
     public static Location[][] locations = new Location[WIDTH][HEIGHT];
 
@@ -23,7 +24,6 @@ public class Island {
     public void createIsland(int WIDTH, int HEIGHT) {
         List<Animal> animals = creatorAnimals.getAnimals();
         int i = 0;
-        int countAnimals = 0;
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 List<Plant> plants = creatorAnimals.plantCreate();
@@ -41,12 +41,12 @@ public class Island {
 
                 for (Animal animal1 : animal) {
                     if(animal1 != null){
-                        countAnimals++;
+                        Parameters.countAnimalsOnIsland++;
                     }
                 }
             }
         }
-        System.out.println("Количество животных - " + animals.size() + " Заселилось на остров - "+ countAnimals);
+        System.out.println("Количество животных - " + animals.size() + " Заселилось на остров - "+ Parameters.countAnimalsOnIsland);
 
     }
 }

@@ -1,8 +1,9 @@
 package Animals.Predators;
-
+import Animals.Animal;
 import Animals.AnimalType;
+import Animals.Parameters;
 
-public class Wolf extends Predators {
+public class Wolf extends Predator {
     private AnimalType animalType = AnimalType.Wolf;
     private double weight= animalType.getAnimalWeight();
 
@@ -12,6 +13,11 @@ public class Wolf extends Predators {
 
     @Override
     public AnimalType getAnimalType() {
-        return animalType;
+        return this.animalType;
+    }
+
+    @Override
+    public Animal reproduce() {
+        return new Wolf(Parameters.countAnimalsOnIsland+1);
     }
 }

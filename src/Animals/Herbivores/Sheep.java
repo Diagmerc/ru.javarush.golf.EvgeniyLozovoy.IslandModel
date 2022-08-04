@@ -1,10 +1,10 @@
 package Animals.Herbivores;
-
 import Animals.Animal;
 import Animals.AnimalType;
-import lombok.Getter;
+import Animals.Parameters;
 
-public class Sheep extends Herbivores {
+
+public class Sheep extends Herbivore {
     private AnimalType animalType = AnimalType.Sheep;
     private double weight= animalType.getAnimalWeight();
 
@@ -14,6 +14,11 @@ public class Sheep extends Herbivores {
 
     @Override
     public AnimalType getAnimalType() {
-        return animalType;
+        return this.animalType;
+    }
+
+    @Override
+    public Animal reproduce() {
+        return new Sheep(Parameters.countAnimalsOnIsland+1);
     }
 }

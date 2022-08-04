@@ -2,8 +2,9 @@ package Animals.Herbivores;
 
 import Animals.Animal;
 import Animals.AnimalType;
+import Animals.Parameters;
 
-public class Goat extends Herbivores {
+public class Goat extends Herbivore {
     private AnimalType animalType = AnimalType.Goat;
     private double weight= animalType.getAnimalWeight();
 
@@ -13,6 +14,11 @@ public class Goat extends Herbivores {
 
     @Override
     public AnimalType getAnimalType() {
-        return animalType;
+        return this.animalType;
+    }
+
+    @Override
+    public Animal reproduce() {
+        return new Goat(Parameters.countAnimalsOnIsland+1);
     }
 }

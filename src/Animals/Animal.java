@@ -1,17 +1,11 @@
 package Animals;
-
-import Animals.Herbivores.*;
-import Animals.Predators.*;
 import Island.Island;
 import Island.Location;
-import lombok.Getter;
-
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public abstract class Animal {
+public abstract class Animal implements Entity {
     AnimalType animalType;
     Location location;
     private int numberOfAnimal;
@@ -19,6 +13,14 @@ public abstract class Animal {
 
     public Animal(int numberOfAnimal) {
         this.numberOfAnimal = numberOfAnimal;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     public AnimalType getAnimalType() {
@@ -29,23 +31,54 @@ public abstract class Animal {
         return numberOfAnimal;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     public void setLocation(Location location) {
         this.location = location;
     }
 
-    public boolean reproduce(Animal animal) {
+    public abstract Animal reproduce();
+
+    public Animal searchForACouple(List<Animal> animals){
+        Animal result = null;
+        for (int i = 0; i < animals.size(); i++) {
+            if(this.getAnimalType() == animals.get(i).getAnimalType() &&
+                    this != animals.get(i)){
+                int random = ThreadLocalRandom.current().nextInt(0, 100);
+                if (this.getAnimalType() == animals.get(i).getAnimalType() && random > 50) {
+                    result = animals.get(i);
+                }
+            }
+        }
+        return result;
+    }
+
+    public void reproduceAndSetCoordinateToAnimal(Animal animal, List<Animal> animals){
+        Animal reproducedAnimal = animal.reproduce();
+        animals.add(reproducedAnimal);
+        reproducedAnimal.setLocation(animal.getLocation());
+    }
+
+    public boolean searchEat(List<? extends Object> animals){
         boolean result = false;
-        int random = ThreadLocalRandom.current().nextInt(0, 100);
-        if (animal.animalType == this.animalType && random > 50) {
-            result = true;
+        for (Object animal1 : animals) {
+            if(this.eat((Animal) animal1) && this != animal1){
+                animals.remove(animal1);
+                this.setWeight(((Animal) animal1).getWeight());
+                System.out.println(this.getClass().getSimpleName() + " съел " + animal1.getClass().getSimpleName());
+                result = true;
+                break;
+            }
         }
         return result;
     }
 
     public boolean eat(Animal animal) {
         boolean result = false;
-        int chanceToEat = ParameterMatrix.chanceEat[this.animalType.getChanseToEat()][animal.animalType.getChanseToEat()];
-        int random = ThreadLocalRandom.current().nextInt(0, 100);
+        int chanceToEat = Parameters.chanceEat[this.getAnimalType().getChanseToEat()][animal.getAnimalType().getChanseToEat()];
+        int random = ThreadLocalRandom.current().nextInt(1, 101);
         if (random > chanceToEat) {
             result = true;
         }
@@ -83,7 +116,7 @@ public abstract class Animal {
                 }
                 random = ThreadLocalRandom.current().nextInt(0, 4);
         }
-        if (locationNext != null) {
+        if (locationNext != null && locationNext.getCountTypeAnimals(this)) {
             locationNext.setAnimals(locationNext.getAnimals(), this);
             locationCurrent.setAnimals(locationCurrent.getAnimals(), this);
             this.setLocation(locationNext);

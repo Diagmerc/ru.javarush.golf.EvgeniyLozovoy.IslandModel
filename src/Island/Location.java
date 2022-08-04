@@ -1,7 +1,10 @@
 package Island;
-
 import Animals.Animal;
+import Animals.Entity;
+import Animals.Herbivores.Herbivore;
+import Animals.Parameters;
 import Animals.Plant;
+import Animals.Predators.Predator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +39,20 @@ public class Location {
        public int getY() {
               return y;
        }
+
+       public boolean getCountTypeAnimals(Animal animal) {
+              boolean result = false;
+              int count = 0;
+              for (Animal animal1 : this.animals) {
+                     if(animal1.getAnimalType() == animal.getAnimalType()){
+                            count++;
+                     }
+              }
+              if(count < animal.getAnimalType().getMaxTypeInLocation()){
+                     result = true;
+              }
+              return result;
+       }
+
 
 }
