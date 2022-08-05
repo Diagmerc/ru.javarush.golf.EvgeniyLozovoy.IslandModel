@@ -1,7 +1,6 @@
 package Animals;
 
 public class Parameters {
-    public static int countAnimalsOnIsland = 0;
     public static final int[][] chanceEat =
             {{0, 0, 0, 0, 0, 10, 15, 60, 80, 60, 70, 15, 10, 40, 0, 0},
                     {0, 0, 15, 0, 0, 0, 0, 20, 40, 0, 0, 0, 0, 10, 0, 0},

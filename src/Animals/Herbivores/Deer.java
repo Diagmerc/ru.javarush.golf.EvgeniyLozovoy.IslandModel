@@ -2,15 +2,14 @@ package Animals.Herbivores;
 import Animals.Animal;
 import Animals.AnimalType;
 import Animals.Parameters;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Getter
+@Setter
 public class Deer extends Herbivore {
     private AnimalType animalType = AnimalType.Deer;
     private double weight= animalType.getAnimalWeight();
-
-    public Deer(int i) {
-        super(i);
-    }
 
     @Override
     public AnimalType getAnimalType() {
@@ -18,7 +17,7 @@ public class Deer extends Herbivore {
     }
 
     @Override
-    public Animal reproduce() {
-        return new Deer(Parameters.countAnimalsOnIsland+1);
+    public Animal newAnimal() {
+        return new Deer();
     }
 }

@@ -1,16 +1,15 @@
 package Animals.Predators;
 import Animals.Animal;
 import Animals.AnimalType;
-import Animals.Parameters;
+import lombok.Getter;
+import lombok.Setter;
 
 
+@Getter
+@Setter
 public class Snake extends Predator {
     private AnimalType animalType = AnimalType.Snake;
     private double weight= animalType.getAnimalWeight();
-
-    public Snake(int i) {
-        super(i);
-    }
 
     @Override
     public AnimalType getAnimalType() {
@@ -19,7 +18,7 @@ public class Snake extends Predator {
 
 
     @Override
-    public Animal reproduce() {
-        return new Snake(Parameters.countAnimalsOnIsland+1);
+    public Animal newAnimal() {
+        return new Snake();
     }
 }
