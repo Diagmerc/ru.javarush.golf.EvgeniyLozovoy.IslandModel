@@ -1,4 +1,4 @@
-package Animals;
+package animals;
 import lombok.Getter;
 import lombok.Setter;
 

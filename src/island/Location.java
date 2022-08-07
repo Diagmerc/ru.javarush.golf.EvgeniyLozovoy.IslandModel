@@ -1,7 +1,7 @@
-package Island;
-import Animals.Animal;
-import Animals.Move;
-import Animals.Plant;
+package island;
+import animals.Animal;
+import animals.Move;
+import animals.Plant;
 import lombok.Getter;
 import lombok.Setter;
 

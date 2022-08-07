@@ -1,7 +1,6 @@
-package Animals.Herbivores;
-import Animals.Animal;
-import Animals.AnimalType;
-import Animals.Parameters;
+package animals.herbivores;
+import animals.Animal;
+import animals.AnimalType;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,5 +1,5 @@
-package Island;
-import Animals.*;
+package island;
+import animals.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 

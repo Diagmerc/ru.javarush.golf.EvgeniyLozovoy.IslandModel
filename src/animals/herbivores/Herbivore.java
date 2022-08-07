@@ -1,6 +1,6 @@
-package Animals.Herbivores;
+package animals.herbivores;
 
-import Animals.Animal;
+import animals.Animal;
 
 
 public abstract class Herbivore extends Animal {

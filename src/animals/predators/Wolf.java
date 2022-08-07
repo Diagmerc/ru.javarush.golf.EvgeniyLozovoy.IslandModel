@@ -1,6 +1,6 @@
-package Animals.Predators;
-import Animals.Animal;
-import Animals.AnimalType;
+package animals.predators;
+import animals.Animal;
+import animals.AnimalType;
 import lombok.Getter;
 import lombok.Setter;
 

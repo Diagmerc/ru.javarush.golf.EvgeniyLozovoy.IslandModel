@@ -1,7 +1,7 @@
-package Runner;
+package runner;
 
-import Animals.Animal;
-import Island.Island;
+import animals.Animal;
+import island.Island;
 
 import java.util.Iterator;
 import java.util.List;

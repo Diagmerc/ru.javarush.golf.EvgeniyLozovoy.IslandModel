@@ -1,6 +1,6 @@
-package Animals;
-import Animals.Herbivores.*;
-import Animals.Predators.*;
+package animals;
+import animals.herbivores.*;
+import animals.predators.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

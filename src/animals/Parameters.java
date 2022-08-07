@@ -1,4 +1,4 @@
-package Animals;
+package animals;
 
 public class Parameters {
     public static final int[][] chanceEat =
