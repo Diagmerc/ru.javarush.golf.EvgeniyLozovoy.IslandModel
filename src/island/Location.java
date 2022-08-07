@@ -48,8 +48,8 @@ public class Location {
        }
 
        public synchronized void move(Animal animal, Location[][] locations) {
-              int moveSpeed = ThreadLocalRandom.current().nextInt(1, animal.getAnimalType().getSpeed() + 1);
-              int random = ThreadLocalRandom.current().nextInt(0, 4);
+              int moveSpeed = ThreadLocalRandom.current().nextInt( animal.getAnimalType().getSpeed() + 1);
+              int random = ThreadLocalRandom.current().nextInt( 4);
               Location locationNext = null;
               switch (Move.values()[random]) {
                      case UP:
@@ -57,25 +57,21 @@ public class Location {
                                    locationNext = locations[x + moveSpeed][y];
                                    break;
                             }
-                            random = ThreadLocalRandom.current().nextInt(0, 4);
                      case DOWN:
                             if (x - moveSpeed >= 0) {
                                    locationNext = locations[x - moveSpeed][y];
                                    break;
                             }
-                            random = ThreadLocalRandom.current().nextInt(0, 4);
                      case LEFT:
                             if (y + moveSpeed < locations[locations.length - 1].length) {
                                    locationNext = locations[x][y + moveSpeed];
                                    break;
                             }
-                            random = ThreadLocalRandom.current().nextInt(0, 4);
                      case RIGHT:
                             if (y - moveSpeed >= 0) {
                                    locationNext = locations[x][y - moveSpeed];
                                    break;
                             }
-                            random = ThreadLocalRandom.current().nextInt(0, 4);
               }
               if (locationNext != null && locationNext.getCountTypeAnimals(animal)) {
                      locationNext.setAnimals(locationNext.getAnimals(), animal);

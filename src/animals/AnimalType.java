@@ -1,5 +1,7 @@
 package animals;
 
+import lombok.Getter;
+import lombok.Setter;
 
 public enum AnimalType {
     Wolf(0,3,30,8,50), Snake(1,3,30,3,15),

@@ -1,7 +1,9 @@
 package animals;
 import lombok.Getter;
 import lombok.Setter;
+import parameters.Parameters;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,32 +16,35 @@ public abstract class Animal implements Entity {
 
     public abstract Animal newAnimal();
 
-    public Animal reproduce(List<Animal> animals){
-        Animal reproduced = null;
-        for (int i = 0; i < animals.size(); i++) {
-            if(this.getAnimalType() == animals.get(i).getAnimalType() &&
-                    this != animals.get(i)){
-                int random = ThreadLocalRandom.current().nextInt(0, 100);
-                if (this.getAnimalType() == animals.get(i).getAnimalType() && random > 50) {
-                    reproduced = this.newAnimal();
+    public void reproduce(List<Animal> animals, List<Animal> allAnimalList){
+        List<Animal> animalsCopy = animals;
+        for (Animal animal : animalsCopy) {
+            if(this.getAnimalType() == animal.getAnimalType() &&
+                    this != animals){
+                int random = ThreadLocalRandom.current().nextInt( 100);
+                if (this.getAnimalType() == animal.getAnimalType() && random < 30) {
+                    animals.add(this.newAnimal());
+                    allAnimalList.add(this.newAnimal());
+                    System.out.println("New " + this.getClass().getSimpleName());
+                    break;
                 }
             }
         }
-        return reproduced;
     }
 
-    public boolean eat(List<? extends Entity> animals){
+    public void eat(List<? extends Entity> entities, List<Animal> allAnimalList){
         boolean result = false;
-        for (Entity animal1 : animals) {
-            boolean eatChanse = this.getEatChanse((Animal) animal1);
-            if(eatChanse && this != animal1){
-                animals.remove(animal1);
-                this.setWeight(this.getWeight() + animal1.getWeight());
-                System.out.println(this.getClass().getSimpleName() + " съел " + animal1.getClass().getSimpleName());
-                result = true;
+        List<? extends Entity> entitiesCopy = new ArrayList<>(entities);
+        for (Entity entity : entitiesCopy) {
+            boolean eatChanse = this.getEatChanse((Animal) entity);
+            if(eatChanse && this != entity){
+                entities.remove(entity);
+                allAnimalList.remove(entity);
+                this.setWeight(this.getWeight() + entity.getWeight());
+                System.out.println(this.getClass().getSimpleName() + " съел " + entity.getClass().getSimpleName());
+                break;
             }
         }
-        return result;
     }
 
     public boolean getEatChanse(Animal animal) {
@@ -50,5 +55,9 @@ public abstract class Animal implements Entity {
             result = true;
         }
         return result;
+    }
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
     }
 }
