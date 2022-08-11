@@ -1,15 +1,26 @@
 package animals.predators;
 import animals.Animal;
 import animals.AnimalType;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class Wolf extends Predator {
-    private AnimalType animalType = AnimalType.Wolf;
+    private AnimalType animalType = AnimalType.WOLF;
     private double weight= animalType.getAnimalWeight();
 
+
+    @Override
+    public void setAnimalType(AnimalType animalType) {
+        this.animalType = animalType;
+    }
+
+    @Override
+    public double getWeight() {
+        return weight;
+    }
+
+    @Override
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 
     @Override
     public AnimalType getAnimalType() {

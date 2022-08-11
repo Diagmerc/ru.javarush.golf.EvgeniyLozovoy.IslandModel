@@ -1,48 +1,66 @@
 package animals;
-import lombok.Getter;
-import lombok.Setter;
+import animals.biota.Plant;
+import animals.predators.Predator;
 import parameters.Parameters;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Getter
-@Setter
 public abstract class Animal implements Entity {
     AnimalType animalType;
-    private int numberOfAnimal;
     private double weight;
 
     public abstract Animal newAnimal();
 
-    public void reproduce(List<Animal> animals, List<Animal> allAnimalList){
-        List<Animal> animalsCopy = animals;
-        for (Animal animal : animalsCopy) {
+    public AnimalType getAnimalType() {
+        return animalType;
+    }
+
+    public void setAnimalType(AnimalType animalType) {
+        this.animalType = animalType;
+    }
+
+    @Override
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        if(this.getAnimalType().getAnimalWeight() <= weight){
+        this.weight = this.getAnimalType().getAnimalWeight() + weight;}else{
+            this.weight = this.getAnimalType().getAnimalWeight();
+        }
+    }
+
+    public void reproduce(List<Animal> animals){
+        for (Animal animal : animals) {
             if(this.getAnimalType() == animal.getAnimalType() &&
-                    this != animals){
+                    this != animal){
                 int random = ThreadLocalRandom.current().nextInt( 100);
-                if (this.getAnimalType() == animal.getAnimalType() && random < 30) {
+                if (random < 5) {
                     animals.add(this.newAnimal());
-                    allAnimalList.add(this.newAnimal());
-                    System.out.println("New " + this.getClass().getSimpleName());
-                    break;
                 }
+                break;
             }
         }
     }
 
-    public void eat(List<? extends Entity> entities, List<Animal> allAnimalList){
-        boolean result = false;
-        List<? extends Entity> entitiesCopy = new ArrayList<>(entities);
-        for (Entity entity : entitiesCopy) {
-            boolean eatChanse = this.getEatChanse((Animal) entity);
-            if(eatChanse && this != entity){
-                entities.remove(entity);
-                allAnimalList.remove(entity);
-                this.setWeight(this.getWeight() + entity.getWeight());
-                System.out.println(this.getClass().getSimpleName() + " съел " + entity.getClass().getSimpleName());
-                break;
+    public void eat(List<Animal> entities, List<Plant> plants){
+        List<Animal> entitiesCopy = new ArrayList<>(entities);
+        for (Animal animal : entitiesCopy) {
+            if (animal instanceof Predator) {
+                boolean eatChanse = this.getEatChanse(animal);
+                if (eatChanse) {
+                    this.setWeight(animal.getWeight());
+                    entities.remove(animal);
+                }
+            }else {
+                ArrayList<Plant> plantsCopy = new ArrayList<>(plants);
+                for (Plant plant : plantsCopy) {
+                    this.setWeight(plant.getWeight());
+                    plant.setNumberOfPlantsOnIsland(plant.getNumberOfPlantsOnIsland() -1);
+                    plants.remove(plant);
+                }
             }
         }
     }
@@ -50,14 +68,12 @@ public abstract class Animal implements Entity {
     public boolean getEatChanse(Animal animal) {
         boolean result = false;
         int chanceToEat = Parameters.chanceEat[this.getAnimalType().getChanseToEat()][animal.getAnimalType().getChanseToEat()];
-        int random = ThreadLocalRandom.current().nextInt(1, 101);
-        if (random < chanceToEat) {
+        int random = ThreadLocalRandom.current().nextInt( 101);
+        if (random < chanceToEat && animal.getWeight() <= animal.getWeight() - animal.getAnimalType().getNeedFoods()) {
             result = true;
         }
         return result;
     }
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
-    }
+
+
 }

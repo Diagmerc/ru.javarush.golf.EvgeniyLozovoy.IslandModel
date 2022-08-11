@@ -1,5 +1,5 @@
 package animals;
 
-public enum Move {
+public enum MoveAnimal {
     UP, DOWN, LEFT, RIGHT
 }

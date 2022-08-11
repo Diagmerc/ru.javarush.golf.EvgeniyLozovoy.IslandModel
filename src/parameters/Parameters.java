@@ -1,6 +1,33 @@
 package parameters;
+import lombok.Getter;
+import lombok.Setter;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
 
+
+@Getter
+@Setter
 public class Parameters {
+    int width;
+    int height;
+    int workTimer;
+    public Parameters(){
+            try (FileReader fileReader = new FileReader("settings.json")) {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(fileReader);
+                width = Math.toIntExact((Long) jsonObject.get("width"));
+                height = Math.toIntExact((Long) jsonObject.get("width"));
+                workTimer = Math.toIntExact((Long) jsonObject.get("workTimer"));
+            } catch (Exception e) {
+                System.out.println("Default size 2 x 2");
+                width = 2;
+                height = 2;
+                workTimer = 10;
+            }
+        }
+
+
     public static final int[][] chanceEat =
             {{0, 0, 0, 0, 0, 10, 15, 60, 80, 60, 70, 15, 10, 40, 0, 0},
                     {0, 0, 15, 0, 0, 0, 0, 20, 40, 0, 0, 0, 0, 10, 0, 0},
@@ -17,4 +44,5 @@ public class Parameters {
                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100},
                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 90, 100},
                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100}};
+
 }

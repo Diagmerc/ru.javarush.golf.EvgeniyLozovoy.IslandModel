@@ -1,14 +1,25 @@
 package animals.herbivores;
 import animals.Animal;
 import animals.AnimalType;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class Buffalo extends Herbivore {
-    private AnimalType animalType = AnimalType.Buffalo;
+    private AnimalType animalType = AnimalType.BUFFALO;
     private double weight = 700;
+
+    @Override
+    public void setAnimalType(AnimalType animalType) {
+        this.animalType = animalType;
+    }
+
+    @Override
+    public double getWeight() {
+        return weight;
+    }
+
+    @Override
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 
     @Override
     public AnimalType getAnimalType() {

@@ -1,56 +1,76 @@
 package island;
-
 import animals.*;
-import parameters.Statistic;
-
-import java.util.ArrayList;
+import animals.biota.Plant;
+import lombok.Getter;
+import lombok.Setter;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
-public class Island {
-    public int width;
-    public int height;
-    public CreatorAnimals creatorAnimals = new CreatorAnimals();
-    public Statistic statistic = new Statistic();
-    public Location[][] locations;
-    public int countPlantsOnIsland = 0;
+@Getter
+@Setter
+public class Island implements Runnable{
+    private int width;
+    private int height;
+    private EntitiesCreator entitiesCreator = new EntitiesCreator();
+    protected static Location[][] locations;
 
-    public Island(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Island() {
+        try (FileReader fileReader = new FileReader("settings.json")) {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(fileReader);
+            width = Math.toIntExact((Long) jsonObject.get("width"));
+            height = Math.toIntExact((Long) jsonObject.get("width"));
+        } catch (Exception e) {
+            System.out.println("Default size 2 x 2");
+            width = 2;
+            height = 2;
+        }
     }
 
     public void initialize() {
         locations = new Location[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                List<Plant> plants = creatorAnimals.plantCreate();
-                List<Animal> animals = creatorAnimals.getAnimals();
-                int random = ThreadLocalRandom.current().nextInt(10);
+                List<Plant> plants = entitiesCreator.plantCreate();
+                List<Animal> animals = entitiesCreator.getAnimals();
                 locations[x][y] = new Location(x, y, animals, plants);
-                if (random < 6) {
-                    statistic.allAnimalsOnIsland.addAll(animals);
-                    countPlantsOnIsland += plants.size();
-                }
             }
         }
-        System.out.println("Количество животных - " + statistic.allAnimalsOnIsland.size() + ". Количество растений" + countPlantsOnIsland);
     }
 
-    public void animalsDoSomthing(int i, int j) {
-        List<Animal> animals = locations[i][j].getAnimals();
-        List<Plant> plants = locations[i][j].getPlants();
-        List<Animal> animalsCopy = new ArrayList<>(animals);
-        if (!animals.isEmpty()) {
-            for (Animal animal : animalsCopy) {
-                int random = ThreadLocalRandom.current().nextInt(3);
-                switch (random) {
-                    case 0 -> animal.eat(animals, statistic.allAnimalsOnIsland);
-                    case 1 -> animal.reproduce(animals, statistic.allAnimalsOnIsland);
-                    case 2 -> locations[i][j].move(animal, locations);
-                    default -> locations[i][j].move(animal, locations);
-                }
-                animal.setWeight(animal.getWeight() - animal.getWeight() * 0.1);
+    public void printStatistic() {
+        System.out.printf("************************************************************************* \n Осталось животных: %d , растений %d \n", statisticAnimal(), statisticPlants());
+
+    }
+
+    public int statisticAnimal() {
+        int count = 0;
+        for (Location[] location : locations) {
+            for (Location value : location) {
+                count+=value.getAnimals().size();
+            }
+        }return count;
+    }
+
+    public int statisticPlants() {
+        int count = 0;
+        for (Location[] location : locations) {
+            for (Location value : location) {
+                count+=value.getPlants().size();
+            }
+        }return count;
+    }
+
+    @Override
+    public void run(){
+        printStatistic();
+        for (Location[] location : locations) {
+            for (Location value : location) {
+                value.animalsDoSomthing();
+                value.plantsGrowUp();
+                System.out.println(value);
             }
         }
     }
