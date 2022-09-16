@@ -10,11 +10,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Island implements Runnable{
+public class Island {
     private int width;
     private int height;
     private EntitiesCreator entitiesCreator = new EntitiesCreator();
-    protected static Location[][] locations;
+    public static Location[][] locations;
 
     public Island() {
         try (FileReader fileReader = new FileReader("settings.json")) {
@@ -41,7 +41,7 @@ public class Island implements Runnable{
     }
 
     public void printStatistic() {
-        System.out.printf("************************************************************************* \n Осталось животных: %d , растений %d \n", statisticAnimal(), statisticPlants());
+        System.out.printf("************************************************************************* \n На острове животных: %d , растений %d \n", statisticAnimal(), statisticPlants());
 
     }
 
@@ -61,18 +61,6 @@ public class Island implements Runnable{
                 count+=value.getPlants().size();
             }
         }return count;
-    }
-
-    @Override
-    public void run(){
-        printStatistic();
-        for (Location[] location : locations) {
-            for (Location value : location) {
-                value.animalsDoSomthing();
-                value.plantsGrowUp();
-                System.out.println(value);
-            }
-        }
     }
 }
 

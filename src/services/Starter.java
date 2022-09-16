@@ -1,43 +1,38 @@
 package services;
 import island.Island;
+import island.Location;
 import parameters.Parameters;
-
 import java.util.concurrent.*;
 
-public class Starter implements Runnable {
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+public class Starter {
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
     int workTimer;
+    Island island = new Island();
 
     public Starter() {
         this.workTimer = new Parameters().getWorkTimer();
     }
-
-    public void timer(int sec){
-        try {
-            Thread.sleep(1000 * sec);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }finally {
-            executor.shutdown();
-        }
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void run() {
-        Island island = new Island();
+    public void init() {
         island.initialize();
-        executor.scheduleAtFixedRate(island, 1, 2, TimeUnit.SECONDS);
-        timer(workTimer);
-        System.out.println("Game over");
-            island.printStatistic();
-
-
+        island.printStatistic();
+            for (Location[] location : Island.locations) {
+                for (Location value : location) {
+                    System.out.println(value);
+                    executor.scheduleAtFixedRate(value, 1, 2, TimeUnit.SECONDS);
+                }
+            }
     }
-
+    public void go(){
+        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(4);
+        scheduledThreadPool.scheduleWithFixedDelay(this::init, 1,2,TimeUnit.SECONDS);
+        try {
+            executor.awaitTermination(workTimer, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executor.shutdown();
+        scheduledThreadPool.shutdown();
+        island.printStatistic();
+        System.out.println("Game over");
+    }
 }

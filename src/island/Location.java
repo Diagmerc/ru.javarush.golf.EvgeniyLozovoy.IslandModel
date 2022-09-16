@@ -13,12 +13,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Getter
 @Setter
-public class Location {
+public class Location implements Runnable {
        private int x;
        private int y;
        private List<Animal> animals;
        private List<Plant> plants;
-       private final Lock lock = new ReentrantLock(true);
+       private final Lock lock = new ReentrantLock();
 
        public void setAnimals(List<Animal> animals) {
               this.animals = animals;
@@ -59,13 +59,13 @@ public class Location {
        public void plantsGrowUp(){
               List<Plant> plantList = getPlants();
               if(!plants.isEmpty()) {
-                     this.getLock();
+                     lock.lock();
                      try{
                             for (Plant plant : plantList) {
-                                   setPlants(plants, plant.getPlant());
+                                          setPlants(plants, plant.getPlant());
                             }
                      }finally {
-                            this.getLock().unlock();
+                            lock.unlock();
                      }
               }
        }
@@ -100,21 +100,26 @@ public class Location {
        }
 
        public synchronized void animalsDoSomthing() {
-              List<Animal> animalList = this.getAnimals();
-              List<Plant> plantsCopy = this.getPlants();
-              List<Animal> animalsCopy = new ArrayList<>(animalList);
-              if (!animalList.isEmpty()) {
-                     for (Animal animal : animalsCopy) {
-                            animal.setWeight(animal.getWeight() - animal.getAnimalType().getAnimalWeight()*0.1);
-                            if(animal.getWeight() < animal.getAnimalType().getAnimalWeight() * 0.2){
-                                   animalList.remove(animal);
-                            }
-                            else {
-                                   animal.eat(animalList, plantsCopy);
-                                   animal.reproduce(animalList);
-                                   this.migration(animal);
+              lock.lock();
+              try {
+                     List<Animal> animalList = this.getAnimals();
+                     List<Plant> plantsCopy = this.getPlants();
+                     List<Animal> animalsCopy = new ArrayList<>(animalList);
+                     if (!animalList.isEmpty()) {
+                            for (Animal animal : animalsCopy) {
+                                   animal.setWeight(animal.getWeight() - animal.getAnimalType().getAnimalWeight() * 0.1);
+                                   if (animal.getWeight() < animal.getAnimalType().getAnimalWeight() * 0.2) {
+                                          animalList.remove(animal);
+                                   } else {
+                                          animal.eat(animalList, plantsCopy);
+                                          animal.reproduce(animalList);
+                                          this.migration(animal);
+                                   }
                             }
                      }
+              }
+              finally {
+                     lock.unlock();
               }
        }
 
@@ -140,5 +145,11 @@ public class Location {
               return "--------------------------------------------------------------------------------------------------------------------------------------" + "\n"
                       + "Location[" + this.x + "][" + this.y + "]: " + "\n"
                       + "In location animals: " + countAnimalsTypes() + "\n";
+       }
+
+       @Override
+       public void run() {
+              animalsDoSomthing();
+              plantsGrowUp();
        }
 }
