@@ -31,17 +31,4 @@ public class Starter {
         island.printStatistic();
         System.out.println("Game over");
     }
-//    public void go(){
-//        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(4);
-//        scheduledThreadPool.scheduleWithFixedDelay(this::init, 1,2,TimeUnit.SECONDS);
-//        try {
-//            executor.awaitTermination(workTimer, TimeUnit.SECONDS);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        executor.shutdown();
-//        scheduledThreadPool.shutdown();
-//        island.printStatistic();
-//        System.out.println("Game over");
-//    }
 }
