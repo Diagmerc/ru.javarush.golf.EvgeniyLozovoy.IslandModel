@@ -13,12 +13,13 @@ public class Parameters {
     int height;
     int workTimer;
     public Parameters(){
+            int milisecondsToSeconds = 1000;
             try (FileReader fileReader = new FileReader("settings.json")) {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) jsonParser.parse(fileReader);
                 width = Math.toIntExact((Long) jsonObject.get("width"));
                 height = Math.toIntExact((Long) jsonObject.get("width"));
-                workTimer = Math.toIntExact((Long) jsonObject.get("workTimer"));
+                workTimer = Math.toIntExact((Long) jsonObject.get("workTimer")) * milisecondsToSeconds;
             } catch (Exception e) {
                 System.out.println("Default size 2 x 2");
                 width = 2;

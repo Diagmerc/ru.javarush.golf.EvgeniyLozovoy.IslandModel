@@ -58,7 +58,6 @@ public abstract class Animal implements Entity {
                 ArrayList<Plant> plantsCopy = new ArrayList<>(plants);
                 for (Plant plant : plantsCopy) {
                     this.setWeight(plant.getWeight());
-//                    plant.setNumberOfPlantsOnIsland(plant.getNumberOfPlantsOnIsland()-1);
                     plants.remove(plant);
                     return;
                 }

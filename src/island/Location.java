@@ -107,7 +107,7 @@ public class Location implements Runnable {
                      List<Animal> animalsCopy = new ArrayList<>(animalList);
                      if (!animalList.isEmpty()) {
                             for (Animal animal : animalsCopy) {
-                                   animal.setWeight(animal.getWeight() - animal.getAnimalType().getAnimalWeight() * 0.1);
+                                   animal.setWeight(animal.getWeight() - animal.getAnimalType().getAnimalWeight() * 0.2);
                                    if (animal.getWeight() < animal.getAnimalType().getAnimalWeight() * 0.2) {
                                           animalList.remove(animal);
                                    } else {
@@ -123,20 +123,27 @@ public class Location implements Runnable {
               }
        }
 
-       public synchronized String countAnimalsTypes(){
+       public String countAnimalsTypes(){
               int count = 0;
               AnimalType[] values = AnimalType.values();
               StringBuilder types = new StringBuilder();
-              for (AnimalType value : values) {
-                     for (Animal animal : animals) {
-                            if (value.getChanseToEat() == animal.getAnimalType().getChanseToEat()) {
-                                   count++;
+              ArrayList<Animal> animalsCopy = new ArrayList<>(animals);
+              try {
+                     lock.lock();
+                     for (AnimalType value : values) {
+                            for (Animal animal : animalsCopy) {
+                                   if (animal != null && value.getChanseToEat() == animal.getAnimalType().getChanseToEat()) {
+                                          count++;
+                                   }
                             }
+                            types.append(value.toString()).append(" ").append(count).append(" ");
+                            count = 0;
                      }
-                     types.append(value.toString()).append(" ").append(count).append(" ");
-                     count = 0;
+                     return types.toString();
               }
-              return types.toString();
+              finally {
+                     lock.unlock();
+              }
        }
 
        @Override
